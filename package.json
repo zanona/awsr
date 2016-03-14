@@ -1,0 +1,19 @@
+{
+  "name": "awsr",
+  "version": "0.1.0",
+  "description": "Utilities for AWS",
+  "main": "index.js",
+  "bin": {
+    "awsr": "bin/index.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Marcus Zanona <zanona@me.com>",
+  "license": "ISC",
+  "dependencies": {
+    "aws4": "^1.3.2",
+    "co": "^4.6.0",
+    "commander": "github:tj/commander.js"
+  }
+}
