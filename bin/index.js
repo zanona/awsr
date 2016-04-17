@@ -1,5 +1,8 @@
 #!/usr/bin/env node
-var program = require('commander');
+
+var program = require('commander'),
+    stdin = '';
+
 program.version(require('../package.json').version);
 program
     .command('apigateway:push <definition>')
@@ -9,11 +12,17 @@ program
         require('../lib/apigateway').push(options.id, definition);
     });
 program
-    .command('lambda:push <file>')
-    .description('Push JS or ZIP file with AWS Lambda')
+    .command('lambda:push [file]')
+    .description('Push JS or ZIP file with AWS Lambda.')
+    .description('Accepts base64 zip file as STDIN as well')
     .option('-f --fn <function-name>', 'Lambda Function Name')
-    .action(function (file, options) {
-        require('../lib/lambda').push(file, options.fn);
+    .action(function (filePath, options) {
+        var fileData;
+        if (stdin) { fileData = stdin; }
+        if (!filePath && !fileData) {
+            return console.error('Missing zip file');
+        }
+        require('../lib/lambda').push(filePath, fileData, options.fn);
     });
 program
     .command('lambda:approve <arn>')
@@ -29,4 +38,17 @@ program
         require('../lib/sts').assume.apply(null, cmd.split(':'));
     });
 
-program.parse(process.argv);
+if (process.stdin.isTTY) {
+    program.parse(process.argv);
+}
+else {
+    process.stdin.on('readable', function() {
+        var chunk = this.read();
+        if (chunk !== null) {
+            stdin += chunk;
+        }
+    });
+    process.stdin.on('end', function() {
+        program.parse(process.argv);
+    });
+}
