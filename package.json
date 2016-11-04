@@ -3,9 +3,7 @@
   "version": "0.1.0",
   "description": "Utilities for AWS",
   "main": "index.js",
-  "bin": {
-    "awsr": "bin/index.js"
-  },
+  "bin": "cli.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
