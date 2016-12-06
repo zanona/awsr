@@ -21,7 +21,7 @@ program
       var fileData;
       if (stdin) fileData = stdin;
       if (!filePath && !fileData) return console.error('Missing zip file');
-      const alias = typeof options.alias === 'string' ? options.alias : void 0;
+      const alias = typeof options.al === 'string' ? options.al : void 0;
       require('./lib/lambda').push(filePath, fileData, options.fn, alias);
     });
 program
